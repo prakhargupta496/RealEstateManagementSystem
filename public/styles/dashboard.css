@@ -1,0 +1,260 @@
+@import url('https://fonts.googleapis.com/css?family=Nunito:400,400i,700,700i&display=swap');
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+html, body {
+    width: 100%;
+    min-height: 100%;
+    min-width: 1600;
+    color: darkslategray;
+}
+
+body {
+    /* background: linear-gradient(45deg, #00416a 25%, #e4e5e6 75%); */
+    /* background-image: linear-gradient(to top, #c4c5c7 0%, #dcdddf 52%, #ebebeb 100%); */
+    /* background: linear-gradient(315deg, #304352, #d7d2cc); */
+    background-repeat: no-repeat;
+    font-family: 'Nunito', sans-serif;
+}
+
+#agent {
+    background: #5cdb95;
+}
+
+#manager, #report {
+    background: linear-gradient(45deg, #3e5151, #decba4);
+}
+
+nav {
+    background: whitesmoke;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 0px 10px darkslategray;
+    text-transform: uppercase;
+    font-size: 24px;
+    font-weight: bold;
+    color: inherit;
+}
+
+nav ul {
+    padding-left: 40px;
+    padding-right: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    list-style-type: none;
+}
+
+nav li {
+    font-size: 18px;
+    display: block;
+    padding: 15px;
+}
+
+nav a {
+    color: inherit;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+#agent .highlight:hover {
+    background: navy;
+    color: whitesmoke;
+    transition: 0.3s ease-out;
+}
+
+#report.highlight:hover, #manager .highlight:hover {
+    background: maroon;
+    color: whitesmoke;
+    transition: 0.3s ease-out;
+}
+
+hr {
+    width: 100%;
+    text-align: center;
+    border-radius: 5px;
+    box-shadow: 0 0 3px lightgray;
+    border: 1px solid lightgray;
+    margin: 5px auto;
+}
+
+.justify-start {
+    justify-content: start;
+}
+
+figcaption.flex-col div.flex-row {
+    justify-content: start;
+}
+
+figcaption span {
+    display: inline-block;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+figcaption .smallspan {
+    font-size: 15px;
+}
+
+.card button {
+    background: inherit;
+    color: inherit;
+    border: none;
+    height: 100%;
+    width: 100%;
+    font-size: 30px;
+    text-transform: uppercase;
+    max-width: 250px;
+    text-align: center;
+    font-weight: bold;
+}
+
+button:active, button:focus {
+    outline: none;
+}
+
+.card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    padding: 15px 40px;
+    box-shadow: 0 0 9px slategray;
+    border-radius: 7px;
+    background: #05386b;
+    max-width: 500px;
+    color: white;
+}
+
+.card h2, .card h6 {
+    display: block;
+    text-align: center;
+    max-width: 320px;
+}
+
+.card h2 {
+    font-size: 26px;
+}
+
+.card h6 {
+    font-size: 20px;
+    font-style: italic;
+}
+
+.card h6:nth-of-type(2) {
+    max-width: 400px;
+}
+
+.card h4 {
+    font-size: 25px;
+    margin: 10px auto;
+}
+
+.card h5 {
+    font-size: 17px;
+    margin: 5px 17px;
+    font-weight: 700;
+}
+
+.card p {
+    font-size: 28px;
+}
+
+.card h3 {
+    display: block;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 19px;
+    margin: 10px auto;
+}
+
+.card a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.card h1 {
+    font-size: 30px;
+    color: inherit;
+    text-transform: uppercase;
+    max-width: 250px;
+    text-align: center;
+}
+
+.transparent {
+    background: none;
+    box-shadow: none;
+}
+
+.small {
+    align-self: center;
+    color: whitesmoke;
+    padding: 45px;
+    margin-top: 40px;
+}
+
+#agent .fixed-height {
+    min-height: 422px;
+    margin-bottom: 37px;
+}
+
+#manager .fixed-height {
+    min-height: 430px;
+    margin-bottom: 29px;
+}
+
+#agent .small {
+    background: navy;
+}
+
+#manager .small {
+    background: maroon;
+}
+
+#agent .small:hover, #manager .small:hover {
+    background: whitesmoke;
+    color: darkslategray;
+    transition: 0.3s ease-out;
+    cursor: pointer;
+}
+
+.marg {
+    margin: 60px 80px 0px 0px;
+}
+
+.height-max {
+    height: 100%;
+}
+
+.display-none {
+    display: none;
+}
+
+.link-inactive:hover {
+    cursor: default;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+/* @media (min-width: 2000px) {
+    nav {
+        padding-left: 15%;
+        padding-right: 15%;
+    }
+
+}
+
+@media (max-width: 1920px) {
+    .card {
+       padding: 15px 30px;
+    }
+} */

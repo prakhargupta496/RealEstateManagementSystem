@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Estate Management System</title>
+    <link rel="stylesheet" type="text/css" href="./styles/styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,700&display=swap" rel="stylesheet"></head>
+<body>
+    <div class="filter">
+
+        <div class="container">
+            <h1>Real Estate Management System</h1>
+            <% if (invalid) { %>
+            <h2>Invalid user id or password</h2>
+            <form class="error" action="/login" method="POST">
+            <% } else {%>
+            <form action="/login" method="POST">
+            <% } %>
+                <input type="text" name="userid" class="inp" placeholder="USER ID" required pattern="[0-9]+">
+                <input type="password" name="password" class="inp" placeholder="PASSWORD" required>
+                <input id="agent" type="submit" value="LOGIN AS AGENT" name="agent">
+                <input id="manager" type="submit" value="LOGIN AS MANAGER" name="manager">
+            </form>
+        </div>
+
+    </div>
+    <!-- <script type="text/javascript" href="./scripts/change.js"></script> -->
+</body>
+</html>

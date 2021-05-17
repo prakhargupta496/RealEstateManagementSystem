@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/styles/main.css">
+    <script src="/scripts/d3.min.js"></script>
+    <script src="/scripts/jquery-3.5.0.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/styles/report.css">
+    <link rel="stylesheet" type="text/css" href="/styles/property.css">
+    <title>Report</title>
+</head>
+<% if(agent) { %>
+<body id="agent">
+<% } else { %>
+<body id="manager">
+<% } %>
+    <nav>
+        <ul><% if (agent) { %>
+            <li class="highlight"><a href="/agent/<%=userID%>">Go Back</a></li>
+            <li class="current"><a class="link-inactive" href="#">Properties</a></li>
+        <% } else { %>
+            <li class="highlight"><form action="/manager/<%=userID%>/report" method="POST">
+                <input type="text" class="display-none" name="name" value="<%=name%>"><button>Go back to report</button></li>
+            <li class="current"><a class="link-inactive" href="#">Properties</a></li>
+        <% } %>
+        </ul>
+        <div>
+            PROPERTY MANAGEMENT SYSTEM
+        </div>
+        <ul>
+            <li class="ital capitalize">Welcome </li>
+            <li class="highlight"><a href="/login">LOGOUT</a></li>
+        </ul>
+    </nav>
+
+    <main class="flex-col">
+        <% if(agent) { %>
+        <div id="filters" class="container flex-row">
+
+            <ul class="flex-row">
+                <li>
+                    <p>Listing Type: </p>
+                </li>
+                <li class="radio">
+                    <div class="check"><div class="inside"></div></div>
+                    <span>Rental</span>
+                </li>
+                <li class="radio selected">
+                    <div class="check"><div class="inside"></div></div>
+                    <span>Sale</span>
+                </li>
+                
+            </ul>
+
+            <div class="vertical-rule"></div>
+
+            <ul class="flex-row">
+                <li>
+                    <p>Property Type: </p>
+                </li>
+                <li class="radio">
+                    <div class="check"><div class="inside"></div></div>
+                    <span>Apartment</span>
+                </li>
+                <li class="radio selected">
+                    <div class="check"><div class="inside"></div></div>
+                    <span>Houses</span>
+                </li>
+                <!-- <li>
+                    <div>
+                        <form action="/filter" method="post">
+                            <label>Search by address</label>
+                            <input class="form-control" type="text" name="Address">
+                        </form>
+                    </div>
+                
+                    <button class="btn btn-primary" type="submit" name="button">Publish</button>
+                </li> -->
+            </ul>
+
+        </div>
+        <% } %>
+
+        <% for (var i = 0; i < property.length; i++) { %>
+            <% if (property[i].listType == 'R') { %>
+            <%      if (property[i].propType == 'H' ) { %>
+                        <section class="container rental house">
+                            <section class="flex-row">
+                                <div class="picture">
+                                    <img src="/images/<%=property[i].picture%>" class="object">
+                                </div>
+                                <div class="vertical-rule"></div>
+                                <section class="flex-col fixed-height small-width">
+                                    <h3>Property ID: <%=property[i].PID%></h3> 
+                                    <h3>Rental House</h3>
+                                    <h3>Date Listed: <%=property[i].dateListed.toDateString()%></h3>
+                                    <% if(agent) { %>
+                                    <h3>Date Rented: -----</h3>
+                                    <% } else { %>
+                                    <h3>Date Rented: <%=property[i].dateSold.toDateString()%></h3>
+                                    <% } %>
+                                </section>
+                                <div class="vertical-rule"></div>
+                                <section class="flex-col fixed-height small-width">
+                                    <h3>Size: <%=property[i].size%> Sq. ft</h3>
+                                    <h3>Bedrooms: <%=property[i].beds%></h3>
+                                    <h3>Bathrooms: <%=property[i].baths%></h3>
+                                    <h3>Rent: $<%=property[i].price.toLocaleString()%></h3>
+                                </section>
+                                <div class="vertical-rule"></div>
+                                <section class="flex-col fixed-height small-width">
+                                    <h4>House Number: <%=property[i].houseNum%></h4>
+                                    <h4>Street: <%=property[i].street%></h4>
+                                    <h4>Zipcode: <%=property[i].zipcode%> </h4>
+                                    <h4>City: <%=property[i].city%></h4>
+                                    <h4>State: <%=property[i].state%></h4>
+                                </section>
+                            </section>
+                            <%      if (agent) { %>
+                                <section class="flex-row flex-row-reverse flex-justify-start">
+                                    <form action="/agent/:id/properties?_method=PUT" method="POST">
+                                        <button>Update as Rented</button>
+                                        <input class="display-none" type="text" name="EID" value="<%=userID%>">
+                                        <input class="display-none" type="text" name="PID" value="<%=property[i].PID%>">
+                                        <input class="display-none" type="text" name="name" value="<%=name%>">
+                                    </form>
+                                </section>
+                    <% } %>
+                        </section>
+            <%      } else {   %>   
+                        <section class="container rental apartment">
+                            <section class="flex-row">
+                                <div class="picture">
+                                    <img src="/images/<%=property[i].picture%>" class="object">
+                                </div>
+                                <div class="vertical-rule"></div>
+                                <section class="flex-col fixed-height small-width">
+                                    <h3>Property ID: <%=property[i].PID%></h3> 
+                                    <h3>Rental Apartment</h3>
+                                    <h3>Date Listed: <%=property[i].dateListed.toDateString()%></h3>
+                                    <% if(agent) { %>
+                                        <h3>Date Rented: -----</h3>
+                                    <% } else { %>
+                                        <h3>Date Rented: <%=property[i].dateSold.toDateString()%></h3>
+                                    <% } %>
+                                </section>
+                                <div class="vertical-rule"></div>
+                                <section class="flex-col fixed-height small-width">
+                                    <h3>Size: <%=property[i].size%> Sq. ft</h3>
+                                    <h3>Bedrooms: <%=property[i].beds%></h3>
+                                    <h3>Bathrooms: <%=property[i].baths%></h3>
+                                    <h3>Rent: $<%=property[i].price.toLocaleString()%></h3>
+                                </section>
+                                <div class="vertical-rule"></div>
+                                <section class="flex-col fixed-height small-width">
+                                    <h4>Apartment Number: <%=property[i].houseNum%></h4>
+                                    <h4>Street: <%=property[i].street%></h4>
+                                    <h4>Zipcode: <%=property[i].zipcode%> </h4>
+                                    <h4>City: <%=property[i].city%></h4>
+                                    <h4>State: <%=property[i].state%></h4>
+                                </section>
+                            </section>
+                            <%      if (agent) { %>
+                                <section class="flex-row flex-row-reverse flex-justify-start">
+                                    <form action="/agent/:id/properties?_method=PUT" method="POST">
+                                        <button>Update as Rented</button>
+                                        <input class="display-none" type="text" name="EID" value="<%=userID%>">
+                                        <input class="display-none" type="text" name="PID" value="<%=property[i].PID%>">
+                                        <input class="display-none" type="text" name="name" value="<%=name%>">
+                                    </form>
+                                </section>
+                    <% } %>
+                        </section>
+            <%      }                                 %>
+            <% } else {                               %>
+                <%      if (property[i].propType == 'H' ) { %>
+                    <section class="container sale house">
+                        <section class="flex-row">
+                            <div class="picture">
+                                <img src="/images/<%=property[i].picture%>" class="object">
+                            </div>
+                            <div class="vertical-rule"></div>
+                            <section class="flex-col fixed-height small-width">
+                                <h3>Property ID: <%=property[i].PID%></h3> 
+                                <h3>Sale House</h3>
+                                <h3>Date Listed: <%=property[i].dateListed.toDateString()%></h3>
+                                <% if(agent) { %>
+                                    <h3>Date Sold: -----</h3>
+                                <% } else { %>
+                                    <h3>Date Sold: <%=property[i].dateSold.toDateString()%></h3>
+                                <% } %>
+                            </section>
+                            <div class="vertical-rule"></div>
+                            <section class="flex-col fixed-height small-width">
+                                <h3>Size: <%=property[i].size%> Sq. ft</h3>
+                                <h3>Bedrooms: <%=property[i].beds%></h3>
+                                <h3>Bathrooms: <%=property[i].baths%></h3>
+                                <h3>Price: $<%=property[i].price.toLocaleString()%></h3>
+                            </section>
+                            <div class="vertical-rule"></div>
+                            <section class="flex-col fixed-height small-width">
+                                <h4>House Number: <%=property[i].houseNum%></h4>
+                                <h4>Street: <%=property[i].street%></h4>
+                                <h4>Zipcode: <%=property[i].zipcode%> </h4>
+                                <h4>City: <%=property[i].city%></h4>
+                                <h4>State: <%=property[i].state%></h4>
+                            </section>
+                        </section>
+                        <%      if (agent) { %>
+                            <section class="flex-row flex-row-reverse flex-justify-start">
+                                <form action="/agent/:id/properties?_method=PUT" method="POST">
+                                    <button>Update as Sold</button>
+                                    <input class="display-none" type="text" name="EID" value="<%=userID%>">
+                                    <input class="display-none" type="text" name="PID" value="<%=property[i].PID%>">
+                                    <input class="display-none" type="text" name="name" value="<%=name%>">
+                                </form>
+                            </section>
+                <% } %>
+                    </section>
+        <%      } else {   %>   
+                    <section class="container sale apartment">
+                        <section class="flex-row">
+                            <div class="picture">
+                                <img src="/images/<%=property[i].picture%>" class="object">
+                            </div>
+                            <div class="vertical-rule"></div>
+                            <section class="flex-col fixed-height small-width">
+                                <h3>Property ID: <%=property[i].PID%></h3> 
+                                <h3>Sale Apartment</h3>
+                                <h3>Date Listed: <%=property[i].dateListed.toDateString()%></h3>
+                                <% if(agent) { %>
+                                    <h3>Date Sold: -----</h3>
+                                <% } else { %>
+                                    <h3>Date Sold: <%=property[i].dateSold.toDateString()%></h3>
+                                <% } %>
+                                </section>
+                            <div class="vertical-rule"></div>
+                            <section class="flex-col fixed-height small-width">
+                                <h3>Size: <%=property[i].size%> Sq. ft</h3>
+                                <h3>Bedrooms: <%=property[i].beds%></h3>
+                                <h3>Bathrooms: <%=property[i].baths%></h3>
+                                <h3>Price: $<%=property[i].price.toLocaleString()%></h3>
+                            </section>
+                            <div class="vertical-rule"></div>
+                            <section class="flex-col fixed-height small-width">
+                                <h4>House Number: <%=property[i].houseNum%></h4>
+                                <h4>Street: <%=property[i].street%></h4>
+                                <h4>Zipcode: <%=property[i].zipcode%> </h4>
+                                <h4>City: <%=property[i].city%></h4>
+                                <h4>State: <%=property[i].state%></h4>
+                            </section>
+                        </section>
+                        <%      if (agent) { %>
+                            <section class="flex-row flex-row-reverse flex-justify-start">
+                                <form action="/agent/:id/properties?_method=PUT" method="POST">
+                                    <button>Update as Sold</button>
+                                    <input class="display-none" type="text" name="EID" value="<%=userID%>">
+                                    <input class="display-none" type="text" name="PID" value="<%=property[i].PID%>">
+                                    <input class="display-none" type="text" name="name" value="<%=name%>">
+                                </form>
+                            </section>
+                <% } %>
+                    </section>
+        <%      }                                 %>
+   
+        <% } %>
+        <% } %>
+    </main>
+
+</body>
+</html>
+<% if (propertyUpdate) { %>
+    <script defer>
+        <% if (propertyUpdateSuccessful) { %>
+            alert("Succesfully updated property!");
+        <% } else { %>
+            alert("Error in updating property. Try again.");
+        <% } %>
+    </script>
+<% } %>
+<script type="text/javascript" src="/scripts/filters.js"></script>

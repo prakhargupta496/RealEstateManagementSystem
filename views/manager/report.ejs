@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/styles/main.css">
+    <script src="/scripts/d3.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/styles/report.css">
+    <title>Report</title>
+</head>
+<body id="report">
+    <nav>
+        <ul>
+            <li class="highlight"><a href="/manager/<%=userID%>">Back to Dashboard</a></li>
+            <li class="current"><a class="link-inactive" href="#">Report</a></li>
+        </ul>
+        <div>
+            REAL ESTATE MANAGEMENT SYSTEM
+        </div>
+        <ul>
+            <li class="ital capitalize">Welcome <%=name.split(" ")[0]%></li>
+            <li class="highlight"><a href="/login">LOGOUT</a></li>
+        </ul>
+    </nav>
+    <main class="flex-col">
+        <% for (var i = 0; i < reports.length; i++) { %>
+            <div class="flex-col no-wrap container">
+                <section class="flex-row no-wrap">
+                    <section class="flex-col fixed-height medium-width">
+                        <h2><%=reports[i].userName%></h2>
+                        <h2>Employee ID: <%=reports[i].userID%></h2>
+                        <h2 class="lower"><%=reports[i].email%></h2>
+                        <h2><%=reports[i].contactNum%></h2>
+                    </section>
+                    <div class="vertical-rule"></div>
+                    <section class="flex-col fixed-height small-width flex-align-start flex-justify-start">
+                        <% if (reports[i].houseRented + reports[i].apartmentRented == 1) {                                          %>
+                            <h3><%=reports[i].houseRented + reports[i].apartmentRented%> property rented out this year</h3>
+                        <% } else {                                                    %>    
+                            <h3><%=reports[i].houseRented + reports[i].apartmentRented%> properties rented out this year</h3>
+                        <% }                                                           %>
+                        <% if (reports[i].houseRented + reports[i].apartmentRented == 0) {                                              %> 
+                            <h3>Average Monthly Rent: $0</h3>
+                        <% } else {                                                          %> 
+                            <h3>Average Monthly Rent: $<%=Math.round((reports[i].houseRentedFor + reports[i].apartmentRentedFor)/(reports[i].houseRented + reports[i].apartmentRented)).toLocaleString()%></h3>
+                        <% }                                                                 %>
+                        <div class="flex-row flex-justify-start">
+                            <div class="orange"></div>
+                            <% if (reports[i].apartmentRented == 1) { %>
+                                <span><%= reports[i].apartmentRented %> Apartment rented</span>
+                            <% } else { %>
+                                <span><%= reports[i].apartmentRented %> Apartments rented</span>
+                            <% } %>
+                        </div>
+                        <div class="flex-row flex-justify-start">
+                            <div class="purple"></div>
+                            <% if (reports[i].houseRented == 1) { %>
+                                <span><%= reports[i].houseRented %> House rented</span>
+                            <% } else { %>
+                                <span><%= reports[i].houseRented %> Houses rented</span>
+                            <% } %>
+                        </div>
+                    </section>
+                    <div class="d3-pie">
+                        <svg id="pie<%= i * 2 %>" height="150" width="150"></svg>
+                        <script>
+                            var data = [<%= reports[i].houseRented %>, <%= reports[i].apartmentRented %>]
+                            console.log(data);
+                            var svg = d3.select("#pie<%= i * 2 %>"),
+                                width = svg.attr("width"),
+                                height = svg.attr("height"),
+                                radius = Math.min(width, height) / 2,
+                                g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+    
+                            var color = d3.scaleOrdinal(['#7a5195', '#ffa600']);
+    
+                            // Generate the pie
+                            var pie = d3.pie();
+    
+                            // Generate the arcs
+                            var arc = d3.arc()
+                                        .innerRadius(0)
+                                        .outerRadius(radius);
+    
+                            //Generate groups
+                            var arcs = g.selectAll("arc")
+                                        .data(pie(data))
+                                        .enter()
+                                        .append("g")
+                                        .attr("class", "arc")
+    
+                            //Draw arc paths
+                            arcs.append("path")
+                                .attr("fill", function(d, i) {
+                                                return color(i);
+                                })
+                                .attr("d", arc);
+                        </script>
+                    </div>
+                    <div class="vertical-rule"></div>
+                    <section class="flex-col fixed-height small-width flex-align-start flex-justify-start">
+                        <% if (reports[i].houseSold + reports[i].apartmentSold == 1) {                                            %>
+                            <h3><%=reports[i].houseSold + reports[i].apartmentSold%> property sold this year</h3>
+                        <% } else {                                                    %>    
+                            <h3><%=reports[i].houseSold + reports[i].apartmentSold%> properties sold this year</h3>
+                        <% }                                                           %>
+                        <% if (reports[i].houseSold + reports[i].apartmentSold == 0 ) {                                                    %>
+                            <h3>Average Selling Price: $0</h3>
+                        <% } else {                                                               %>
+                            <h3>Average Selling Price: $<%=Math.round((reports[i].houseSoldPrice + reports[i].apartmentSoldPrice)/(reports[i].houseSold + reports[i].apartmentSold)).toLocaleString()%></h3>
+                        <% }                                                                      %>
+                        <div class="flex-row flex-justify-start">
+                            <div class="pink"></div>
+                            <% if (reports[i].apartmentSold == 1) { %>
+                                <span><%= reports[i].apartmentSold %> Apartment sold</span>
+                            <% } else { %>
+                                <span><%= reports[i].apartmentSold %> Apartments sold</span>
+                            <% } %>
+                        </div>
+                        <div class="flex-row flex-justify-start">
+                            <div class="navy"></div>
+                            <% if (reports[i].houseSold == 1) { %>
+                                <span><%= reports[i].houseSold %> Houses sold</span>
+                            <% } else { %>
+                                <span><%= reports[i].houseSold %> Houses sold</span>
+                            <% } %>
+                        </div>
+                    </section>
+                    <div class="d3-pie">
+                        <svg id="pie<%= (i * 2) + 1 %>" height="150" width="150"></svg>
+                        <script>
+                            var data = [<%= reports[i].houseSold %>, <%= reports[i].apartmentSold %>]
+                            console.log(data);
+                            var svg = d3.select("#pie<%= (i * 2) + 1 %>"),
+                                width = svg.attr("width"),
+                                height = svg.attr("height"),
+                                radius = Math.min(width, height) / 2,
+                                g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+    
+                            var color = d3.scaleOrdinal(['#003f5c', '#ef5675']);
+    
+                            // Generate the pie
+                            var pie = d3.pie();
+    
+                            // Generate the arcs
+                            var arc = d3.arc()
+                                        .innerRadius(0)
+                                        .outerRadius(radius);
+    
+                            //Generate groups
+                            var arcs = g.selectAll("arc")
+                                        .data(pie(data))
+                                        .enter()
+                                        .append("g")
+                                        .attr("class", "arc")
+    
+                            //Draw arc paths
+                            arcs.append("path")
+                                .attr("fill", function(d, i) {
+                                                return color(i);
+                                })
+                                .attr("d", arc);
+                        </script>
+                    </div>
+                </section>        
+                <section class="flex-row flex-row-reverse flex-justify-start">
+                    <form action="report/<%=reports[i].userID%>" method="POST">
+                        <button>View Properties</button>
+                        <input class="display-none" type="text" name="name" value="<%=name%>">
+                    </form>
+                </section>
+            </div>
+        <% } %>
+    </main>
+</body>
+</html>

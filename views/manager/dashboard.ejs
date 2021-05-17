@@ -1,0 +1,249 @@
+<% var houseSold=0, apartSold=0, houseRented=0, apartRented=0;           %>
+<% var apartRent=0, houseRent=0, housePrice=0, apartPrice=0;             %>  
+<% var date = new Date()                                                 %>
+
+<% for (var i = 0; i < officeSales.length; i++) {                                %>
+<%      if (officeSales[i].propType === 'H') {                                   %>
+<%          if(officeSales[i].listType === 'S') {                                %>
+<%              housePrice = officeSales[i].sum;                                 %>
+<%              houseSold  = officeSales[i].count;                               %>
+<%          } else {                                                             %>
+<%              houseRent =   officeSales[i].sum;                                %>
+<%              houseRented = officeSales[i].count;                              %>
+<%          }                                                                    %>
+<%      } else {                                                                 %> 
+<%          if(officeSales[i].listType === 'S') {                                %>
+<%              apartPrice = officeSales[i].sum;                                 %>
+<%              apartSold  = officeSales[i].count;                               %>
+<%          } else {                                                             %>
+<%              apartRent =   officeSales[i].sum;                                %>
+<%              apartRented = officeSales[i].count;                              %>
+<%          }                                                                    %>
+<%  } }                                                                          %>
+
+<% var rent=0, price=0;                                                  %>                                  
+<% var sold = houseSold + apartSold;                                     %>
+<% var rented = apartRented + houseRented;                               %>
+
+<% if (sold > 0) {                                                       %>
+<%     price = housePrice + apartPrice;                                  %> 
+<% }                                                                     %>
+<% if (rented > 0) {                                                     %>
+<%     rent = houseRent + apartRent;                                     %> 
+<% }                                                                     %>
+
+<% var houseSell=0, apartSell=0, houseRents=0, apartRents=0; %>
+<%  for (var i = 0; i < office.length; i++) {                %>
+<%      if (office[i].listType === 'S'){                     %>
+<%          if(office[i].propType === 'H') {                 %>
+<%              houseSell = office[i].count;                 %>
+<%          } else {                                         %>
+<%              apartSell = office[i].count;                 %>
+<%          }                                                %>
+<%      } else {                                             %>
+<%          if(office[i].propType === 'H') {                 %>
+<%              houseRents = office[i].count;                %>
+<%          } else {                                         %>
+<%              apartRents = office[i].count;                %>
+<%  } } }                                                    %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/styles/main.css">
+    <script src="/scripts/d3.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/styles/dashboard.css">
+    <title>Dashboard</title>
+</head>
+<body id="manager">
+    <nav>
+        <ul>
+            <li class="current"><a class="link-inactive">Dashboard</a></li>
+        </ul>
+        <div>
+            REAL ESTATE MANAGEMENT SYSTEM
+        </div>
+        <ul>
+            <li class="ital capitalize">Welcome <%= user.name.split(" ")[0]%></li>
+            <li class="highlight"><a href="/logout">LOGOUT</a></li>
+        </ul>
+    </nav>
+    <main class="flex-col">
+        <div class="flex-row stretch fixed-width">
+                     
+            <section class="card fixed-height">
+                <h2>SalesOffice ID: <%=user.officeID%></h2>
+                <hr>
+                <h2>Manager Name:</h2>
+                <h6><%=user.name%></h6>
+                <h2>Manager Contact:</h2>
+                <h6 class="ital lower"><%=user.email%></h6>
+                <h6><%=user.contactNum%></h6>
+                <hr>
+                <h2>SalesOffice Address:</h2>
+                <h6><%=user.buildingNumber%>, <%=user.street%>, <%=user.zipcode%>, <%=user.city%>, <%=user.state%></h6>
+            </section>
+
+            <section class="card fixed-height">
+                <h3><%=user.name%></h3>
+                <hr>
+                <h3>Employee ID: <%=user.EID%></h3>
+                <hr>
+                <h3>Office ID: <%=user.officeID%></h3>
+                <hr>
+                <h3 class="ital lower"><%=user.email%></h3>
+                <hr>
+                <h3>Phone: <%=user.contactNum%></h3>
+            </section>
+
+            <section class="card fixed-height">
+                <h3>Office Statistics for <%=date.getFullYear()%></h3>
+                <div class="flex-row stretch">
+                    <section class="flex-col justify-start stretch">
+                        <% if (rented == 1) {                                          %>
+                            <h5><%=rented%> property rented out this year</h5>
+                        <% } else {                                                    %>    
+                            <h5><%=rented%> properties rented out this year</h5>
+                        <% }                                                           %>
+                        <% if (rented == 0) {                                              %> 
+                            <h5>Average Monthly Rent: $0</h5>
+                        <% } else {                                                          %> 
+                            <h5>Average Monthly Rent: $<%=Math.round(rent/rented).toLocaleString()%></h5>
+                        <% }                                                                 %> 
+                    </section>
+                    <section class="flex-col justify-start stretch">
+                        <% if (sold == 1) {                                            %>
+                            <h5><%=sold%> property sold this year</h5>
+                        <% } else {                                                    %>    
+                            <h5><%=sold%> properties sold this year</h5>
+                        <% }                                                           %>
+                        <% if (sold == 0 ) {                                                    %>
+                            <h5>Average Selling Price: $0</h5>
+                        <% } else {                                                               %>
+                            <h5>Average Selling Price: $<%=Math.round(price/sold).toLocaleString()%></h5>
+                        <% }                                                                      %>
+                    </section>
+                </div>
+                <hr>
+                <figure class="flex-row">
+                    <div class="d3-pie d3-pie-md">
+                        <svg height="170" width="170"></svg>
+                        <script>
+                            var data = [<%= houseRented %>, <%= apartRented %>, <%= houseSold %>, <%= apartSold %>]
+                            console.log(data);
+                            var svg = d3.select("svg"),
+		                    	width = svg.attr("width"),
+			                    height = svg.attr("height"),
+			                    radius = Math.min(width, height) / 2,
+			                    g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+		                    var color = d3.scaleOrdinal(['#7a5195', '#ffa600', '#003f5c', '#ef5675']);
+
+		                    // Generate the pie
+		                    var pie = d3.pie();
+
+		                    // Generate the arcs
+		                    var arc = d3.arc()
+				                    	.innerRadius(0)
+					                    .outerRadius(radius);
+
+		                    //Generate groups
+		                    var arcs = g.selectAll("arc")
+					                    .data(pie(data))
+				                    	.enter()
+				                    	.append("g")
+				                    	.attr("class", "arc")
+
+		                    //Draw arc paths
+		                    arcs.append("path")
+			                    .attr("fill", function(d, i) {
+			                                	return color(i);
+		                    	})
+		                    	.attr("d", arc);
+                        </script>
+                    </div>
+                    <figcaption class="flex-col stretch">
+                        <div class="flex-row">
+                            <div class="orange marg-small"></div>
+                            <% if (apartRented == 1) { %>
+                                <span class="smallspan"><%= apartRented %> Apartment rented</span>
+                            <% } else { %>
+                                <span class="smallspan"><%= apartRented %> Apartments rented</span>
+                            <% } %>
+                        </div>
+                        <div class="flex-row">
+                            <div class="purple marg-small"></div>
+                            <% if (houseRented == 1) { %>
+                                <span class="smallspan"><%= houseRented %> House rented</span>
+                            <% } else { %>
+                                <span class="smallspan"><%= houseRented %> Houses rented</span>
+                            <% } %>
+                        </div>
+                        <div class="flex-row">
+                            <div class="pink marg-small"></div>
+                            <% if (apartSold == 1) { %>
+                                <span class="smallspan"><%= apartSold %> Apartment sold</span>
+                            <% } else { %>
+                                <span class="smallspan"><%= apartSold %> Apartments sold</span>
+                            <% } %>
+                        </div>
+                        <div class="flex-row">
+                            <div class="navy marg-small"></div>
+                            <% if (houseSold == 1) { %>
+                                <span class="smallspan"><%= houseSold %> Houses sold</span>
+                            <% } else { %>
+                                <span class="smallspan"><%= houseSold %> Houses sold</span>
+                            <% } %>
+                        </div>
+                    </figcaption>
+                </figure>
+            </section>
+        </div>
+       
+        <div class="flex-row stretch fixed-width marg-bottom">
+            <div>
+                <div class="flex-row">
+                    <section class="card marg">
+                    <% if (houseSell == 1)  {                                               %>
+                        <h4><%=houseSell%> unsold house listed by your sales office.</h4>
+                    <% } else {                                                             %>
+                        <h4><%=houseSell%> unsold houses listed by your sales office.</h4>
+                    <% }                                                                    %>
+                    </section>
+                    <section class="card marg">
+                    <% if (apartSell == 1)  {                                                        %>
+                        <h4><%=apartSell%> unsold apartment listed by your sales office.</h4>
+                    <% } else {                                                                      %>
+                        <h4><%=apartSell%> unsold apartments listed by your sales office.</h4>
+                    <% }                                                                             %>
+                    </section>
+                </div>
+                <div class="flex-row">
+                    <section class="card marg">
+                    <% if (houseRents == 1)  {                                                             %>
+                        <h4><%=houseRents%> house listed by your office is available for rent.</h4>
+                    <% } else {                                                                            %>
+                        <h4><%=houseRents%> houses listed by your office are available for rent.</h4>
+                    <% }                                                                                   %>
+                    </section>
+                    <section class="card marg">
+                    <% if(apartRents == 1) {                                                                     %>                   
+                        <h4><%=apartRents%> apartment listed by your office is available for rent.</h4>
+                    <% } else {                                                                                  %>
+                        <h4><%=apartRents%> apartments listed by your office are available for rent.</h4>
+                    <% }                                                                                         %>
+                    </section>
+                </div>
+            </div>
+            <form class="card small" action="<%=user.EID%>/report" method="POST">
+                <input type="text" class="display-none" name="name" value="<%=user.name%>">
+                <button>View employee<br>sales report</button>
+            </form>
+            
+        </div>
+
+    </main>
+</body>
+</html>

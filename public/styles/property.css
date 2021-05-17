@@ -1,0 +1,97 @@
+.picture {
+    height: 210px;
+    width: 280px;
+    box-shadow: 0px 0px 5px #c0c0c0;
+    border-radius: 5px;
+    padding: 9px;
+}
+
+.object {
+    background: silver;
+    display: block;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+    box-shadow: 0px 0px px whitesmoke inset;
+}
+
+main {
+    padding-top: 25px;
+}
+
+#filters {
+    justify-content: space-around;
+}
+
+#filters .flex-row {
+    max-width: 600px;
+}
+
+#filters .vertical-rule {
+    height: 20px;
+}
+
+#filters p, #filters label {
+    text-transform: uppercase;
+}
+
+#filters p {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#filters label, #filters span {
+    font-size: 22px;
+    line-height: 26px;
+    font-weight: 700;
+}
+
+#filters .check {
+    height: 25px;
+    width: 25px;
+    border: 4px solid darkslategray;
+    border-radius: 100%;
+    margin-right: 17px;
+}
+
+#filters li {
+    display: flex;
+    flex-direction: row;
+}
+
+#filters .radio .inside {
+    display: block;
+    height: 13px;
+    width: 13px;
+    background: whitesmoke;
+    border-radius: 100%;
+    margin: 2px;
+}
+
+
+#filters li.radio:hover {
+    cursor: pointer;
+}
+
+#filters li.radio:hover span {
+    color: black;
+    transition: 0.5s ease-out;
+}
+
+#filters li.radio:hover .check {
+    border: 4px solid black;
+    transition: 0.5s ease-out;
+}
+
+#filters .selected span {
+    color: navy;
+}
+
+#filters .selected .check {
+    border: 4px solid navy;
+}
+
+#filters .selected .inside {
+    background: navy;
+}
